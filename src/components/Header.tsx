@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import ThemeToggle from "./ThemeToggle";
 
 const ROUTES = [
@@ -10,6 +10,7 @@ const ROUTES = [
 
 function Header() {
   const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
   return (
     <>
       <div className='flex flex-row justify-between items-center w-full h-12 px-4 bg-gray-200 dark:bg-gray-700'>
@@ -17,6 +18,11 @@ function Header() {
           className='text-black dark:text-white font-extrabold text-xl cursor-none'
           whileHover={{ scale: 1.2 }}>
           Seraph
+          {location.pathname !== "/" && (
+            <span className='font-light tracking-tighter'>
+              {location.pathname}
+            </span>
+          )}
         </motion.h1>
         <div className='flex flex-row space-x-4'>
           <ThemeToggle />
