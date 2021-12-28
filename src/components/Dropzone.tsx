@@ -3,10 +3,16 @@ import { useDropzone } from "react-dropzone";
 import { motion } from "framer-motion";
 import useImageStore from "../stores/ImageStore";
 import useWasm from "../hooks/useWasm";
+import uniqid from "uniqid";
 
 function Dropzone() {
   const [files, setFiles] = useState([]);
-  const { images, setImages } = useImageStore();
+  const {
+    images,
+    setImages,
+    setLoading,
+    loading: imagesLoading
+  } = useImageStore();
   const { error, loading, initialize, wasmInstance } = useWasm();
 
   useEffect(() => {
@@ -25,6 +31,7 @@ function Dropzone() {
       )
     );
     const imageArrays: Array<Uint8Array> = [];
+    setLoading(true);
     acceptedFiles.forEach((file: any) => {
       const reader = new FileReader();
 
@@ -37,6 +44,7 @@ function Dropzone() {
       reader.readAsArrayBuffer(file);
     });
     setImages(imageArrays);
+    setLoading(false);
   }, []);
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -46,7 +54,7 @@ function Dropzone() {
 
   const thumbs = files.map((file: any) => (
     <img
-      key={file.preview}
+      key={uniqid()}
       src={file.preview}
       alt='thumbnail of uploaded file'
       className='w-16 h-16'
@@ -76,7 +84,7 @@ function Dropzone() {
         initial={{ opacity: 0, translateY: -20 }}
         animate={{ opacity: 1, translateY: 0 }}
         whileHover={{ scale: 1.1 }}>
-        <div className='rounded-lg shadow-xl bg-gray-50 dark:bg-gray-800 w-2/3'>
+        <div className='rounded-lg bg-white dark:bg-gray-800 w-2/3'>
           <div className='m-4'>
             <div className='flex items-center justify-center w-full'>
               <label
@@ -107,17 +115,20 @@ function Dropzone() {
           </div>
         </div>
       </motion.div>
-      <button
-        className='mt-8 bg-gray-600 hover:bg-gray-800 dark:bg-gray-400 hover:dark:bg-gray-200 text-white dark:text-gray-100 hover:dark:text-gray-600 py-2 px-4 rounded'
-        onClick={() => {
-          try {
-            wasmInstance?.read_images_web(images[0]);
-          } catch (error) {
-            console.error(error);
-          }
-        }}>
-        Test
-      </button>
+      {
+        <button
+          disabled={imagesLoading || images.length === 0}
+          className='mt-8 bg-gray-600 hover:bg-gray-800 dark:bg-gray-400 hover:dark:bg-gray-200 text-white dark:text-gray-100 hover:dark:text-gray-600 py-2 px-4 rounded disabled:opacity-70 disabled:cursor-not-allowed'
+          onClick={() => {
+            try {
+              wasmInstance?.get_hash(images[0]);
+            } catch (error) {
+              console.error(error);
+            }
+          }}>
+          Calculate Hash
+        </button>
+      }
     </>
   );
 }

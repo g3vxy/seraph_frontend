@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import uniqid from "uniqid";
 import ThemeToggle from "./ThemeToggle";
 
 const ROUTES = [
@@ -11,13 +12,16 @@ const ROUTES = [
 function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
   return (
     <>
       <div className='flex flex-row justify-between items-center w-full h-12 px-4 bg-gray-200 dark:bg-gray-700'>
         <motion.h1
-          className='text-black dark:text-white font-extrabold text-xl cursor-none'
+          className='text-black dark:text-white font-extrabold text-xl cursor-default'
           whileHover={{ scale: 1.2 }}>
-          Seraph
+          <span className='cursor-pointer' onClick={() => navigate("/")}>
+            Seraph
+          </span>
           {location.pathname !== "/" && (
             <span className='font-light tracking-tighter'>
               {location.pathname}
@@ -62,7 +66,7 @@ function Header() {
               if (index === ROUTES.length - 1) {
                 return (
                   <Link
-                    key={route.label}
+                    key={uniqid()}
                     to={route.to}
                     className='w-full border-y-2 md:border-x-2 border-y-gray-300 md:border-x-gray-300 dark:border-y-gray-600 md:dark:border-x-gray-600 text-center py-1 text-black dark:text-white'>
                     {route.label}
@@ -71,7 +75,7 @@ function Header() {
               } else {
                 return (
                   <Link
-                    key={route.label}
+                    key={uniqid()}
                     to={route.to}
                     className='w-full border-t-2 md:border-x-2 border-t-gray-300 md:border-x-gray-300 dark:border-t-gray-600 md:dark:border-x-gray-600 text-center py-1 text-black dark:text-white'>
                     {route.label}

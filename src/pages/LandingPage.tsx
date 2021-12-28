@@ -8,7 +8,7 @@ function LandingPage() {
       <Header></Header>
       <div className='container h-full flex flex-col justify-center items-center'>
         <motion.div
-          className='flex flex-col w-2/3 mx-auto'
+          className='flex flex-col w-3/4 mx-auto'
           key='landingPageTitle'
           transition={{
             type: "spring"
