@@ -1,8 +1,15 @@
 import { motion } from "framer-motion";
+import { useEffect } from "react";
 import Dropzone from "../components/Dropzone";
 import Header from "../components/Header";
+import useImageStore from "../stores/ImageStore";
 
 function LandingPage() {
+  const { setImages } = useImageStore();
+  useEffect(() => {
+    setImages([]);
+  }, []);
+
   return (
     <>
       <Header></Header>

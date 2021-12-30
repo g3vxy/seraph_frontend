@@ -15,7 +15,7 @@ function Header() {
   const navigate = useNavigate();
   return (
     <>
-      <div className='flex flex-row justify-between items-center w-full h-12 px-4 bg-gray-200 dark:bg-gray-700'>
+      <div className='flex flex-row justify-between items-center w-full h-12 px-4 bg-gray-200 dark:bg-gray-700 min-h-[3rem]'>
         <motion.h1
           className='text-black dark:text-white font-extrabold text-xl cursor-default'
           whileHover={{ scale: 1.2 }}>

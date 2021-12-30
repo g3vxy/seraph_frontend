@@ -3,8 +3,8 @@ import create from "zustand";
 type ImageStore = {
   loading: boolean;
   setLoading: (loading: boolean) => void;
-  images: Array<Uint8Array>;
-  setImages: (newImages: Array<Uint8Array>) => void;
+  images: Array<any>;
+  setImages: (newImages: Array<any>) => void;
 };
 
 const useImageStore = create<ImageStore>(set => ({
@@ -14,7 +14,7 @@ const useImageStore = create<ImageStore>(set => ({
       return { loading: !state.loading };
     }),
   images: [],
-  setImages: (newImages: Array<Uint8Array>) =>
+  setImages: (newImages: Array<any>) =>
     set(state => {
       return { images: newImages };
     })
